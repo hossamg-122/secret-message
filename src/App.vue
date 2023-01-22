@@ -1,26 +1,75 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="row">
+    <div class="col s8 offset-s2">
+      <div class="card-panel">
+        <div>
+          <form action="">
+            <label for="">Enter Your Secret Message</label>
+            <input type="text" class="code" />
+            <button class="btn">Create</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="card-panel hidden" id="coded">
+        <label>Share This Link With Your Friend</label>
+        <input type="text" class="share" />
+      </div>
+
+      <div class="card-panel hidden" id="uncoded">
+        <label>Your Secret Message</label>
+        <h1 class="uncoded"></h1>
+        <a href="./index.html">Create Your Own Message</a>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+  name: "App",
+
+  mounted() {
+    const form = document.querySelector("form");
+    const input = document.querySelector(".code");
+    const share = document.querySelector(".share");
+    const inputMessage = document.querySelector(".card-panel");
+    const code = document.querySelector("#coded");
+
+    const uncoded = document.querySelector("#uncoded");
+    const { hash } = window.location;
+    if (hash) {
+      const uncodedMessage = document.querySelector(".uncoded");
+      uncodedMessage.innerHTML = atob(hash.replace(/#/g, ""));
+      uncoded.classList.remove("hidden");
+      inputMessage.classList.add("hidden");
+    } else {
+      let encryptedMessage;
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        if (hash[0] === "#") {
+          const coder = input.value.slice(1);
+          encryptedMessage = atob(coder);
+          share.value = encryptedMessage;
+        } else {
+          encryptedMessage = btoa(input.value);
+          share.value = `${window.location}#${encryptedMessage}`;
+        }
+
+        inputMessage.classList.add("hidden");
+        code.classList.remove("hidden");
+        share.select();
+      });
+    }
+  },
+};
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+.row {
+  margin-top: 25vh;
+}
+.hidden {
+  display: none !important;
 }
 </style>
