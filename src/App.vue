@@ -18,7 +18,7 @@
 
       <div class="card-panel hidden" id="uncoded">
         <label>Your Secret Message</label>
-        <h1 class="uncoded"></h1>
+        <h5 class="uncoded"></h5>
         <a href="./index.html">Create Your Own Message</a>
       </div>
     </div>
